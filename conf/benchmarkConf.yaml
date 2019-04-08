@@ -2,14 +2,14 @@
 # Licensed under the terms of the Apache License 2.0. Please see LICENSE file in the project root for terms.
 
 kafka.brokers:
-    - "localhost"
+    - "gpu2"
 
 zookeeper.servers:
-    - "localhost"
+    - "gpu2"
 
 kafka.port: 9092
 zookeeper.port: 2181
-redis.host: "localhost"
+redis.host: "gpu2"
 kafka.topic: "ad-events"
 kafka.partitions: 1
 
