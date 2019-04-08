@@ -57,3 +57,9 @@ $SPARK_DIR/sbin/start-slave.sh spark://localhost:7077
     run "STOP_KAFKA"
     run "STOP_REDIS"
     run "STOP_ZK"
+
+
+    redis.clients.jedis.exceptions.JedisConnectionException: Could not get a resource from the pool
+
+
+    redis.clients.jedis.exceptions.JedisConnectionException: java.net.ConnectException: Connection refused
