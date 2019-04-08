@@ -22,7 +22,7 @@ APEX_VERSION=${APEX_VERSION:-"3.4.0"}
 
 STORM_DIR="apache-storm-$STORM_VERSION"
 REDIS_DIR="redis-$REDIS_VERSION"
-KAFKA_DIR="kafka_$SCALA_BIN_VERSION-$KAFKA_VERSION"
+KAFKA_DIR="/root/kafka_2.12-2.2.0"
 FLINK_DIR="flink-$FLINK_VERSION"
 SPARK_DIR="/root/buspark/spark"
 APEX_DIR="apex-$APEX_VERSION"
@@ -175,7 +175,7 @@ run() {
   elif [ "START_ZK" = "$OPERATION" ];
   then
     # start_if_needed dev_zookeeper ZooKeeper 10 "$STORM_DIR/bin/storm" dev-zookeeper
-    start_if_needed zookeeper.server ZooKeeper 10 "$KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/zookeeper.properties"
+    start_if_needed zookeeper.server ZooKeeper 10 "$KAFKA_DIR/bin/kafka-server-start.sh" "$KAFKA_DIR/config/zookeeper.properties"
 
   elif [ "STOP_ZK" = "$OPERATION" ];
   then
