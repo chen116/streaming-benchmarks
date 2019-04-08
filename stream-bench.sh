@@ -36,7 +36,7 @@ ZK_PORT="2181"
 ZK_CONNECTIONS="$ZK_HOST:$ZK_PORT"
 TOPIC=${TOPIC:-"ad-events"}
 PARTITIONS=${PARTITIONS:-1}
-LOAD=${LOAD:-1000}
+LOAD=${LOAD:-100000}
 CONF_FILE=./conf/localConf.yaml
 TEST_TIME=${TEST_TIME:-60}
 
@@ -323,13 +323,13 @@ run() {
     run "START_ZK"
     run "START_REDIS"
     run "START_KAFKA"
-    run "START_SPARK"
+    # run "START_SPARK"
     run "START_SPARK_PROCESSING"
     run "START_LOAD"
     sleep $TEST_TIME
     run "STOP_LOAD"
     run "STOP_SPARK_PROCESSING"
-    run "STOP_SPARK"
+    # run "STOP_SPARK"
     run "STOP_KAFKA"
     run "STOP_REDIS"
     run "STOP_ZK"
