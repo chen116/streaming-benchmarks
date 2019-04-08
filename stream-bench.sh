@@ -42,6 +42,7 @@ TEST_TIME=${TEST_TIME:-240}
 
 pid_match() {
    local VAL=`ps -aef | grep "$1" | grep -v grep | awk '{print $2}'`
+   #local VAL=`ps -aef | grep zookeeper.server | grep -v grep | awk '{print $2}'`
    echo $VAL
 }
 
@@ -139,7 +140,7 @@ run() {
 	echo 'spark.batchtime: 2000' >> $CONF_FILE
 	
     # $MVN clean install -Dspark.version="$SPARK_VERSION" -Dkafka.version="$KAFKA_VERSION" -Dflink.version="$FLINK_VERSION" -Dstorm.version="$STORM_VERSION" -Dscala.binary.version="$SCALA_BIN_VERSION" -Dscala.version="$SCALA_BIN_VERSION.$SCALA_SUB_VERSION" -Dapex.version="$APEX_VERSION"
-    #$MVN clean install -Dspark.version="$SPARK_VERSION" -Dscala.binary.version="$SCALA_BIN_VERSION" -Dscala.version="$SCALA_BIN_VERSION.$SCALA_SUB_VERSION"
+    $MVN clean install -Dspark.version="$SPARK_VERSION" -Dscala.binary.version="$SCALA_BIN_VERSION" -Dscala.version="$SCALA_BIN_VERSION.$SCALA_SUB_VERSION"
     #Fetch and build Redis
     REDIS_FILE="$REDIS_DIR.tar.gz"
     fetch_untar_file "$REDIS_FILE" "http://download.redis.io/releases/$REDIS_FILE"
@@ -174,7 +175,7 @@ run() {
   elif [ "START_ZK" = "$OPERATION" ];
   then
     # start_if_needed dev_zookeeper ZooKeeper 10 "$STORM_DIR/bin/storm" dev-zookeeper
-    start_if_needed dev_zookeeper ZooKeeper 10 "$KAFKA_DIR/bin/kafka-server-start.sh" "$KAFKA_DIR/config/zookeeper.properties"
+    start_if_needed zookeeper.server ZooKeeper 10 "$KAFKA_DIR/bin/kafka-server-start.sh" "$KAFKA_DIR/config/zookeeper.properties"
 
   elif [ "STOP_ZK" = "$OPERATION" ];
   then
