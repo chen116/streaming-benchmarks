@@ -40,12 +40,11 @@ object KafkaRedisAdvertisingStream {
       case other => throw new ClassCastException(other + " not a String")
     }
 
-//    val redisHost = commonConfig.get("redis.host") match {
-//      case s: String => s
-//      case other => throw new ClassCastException(other + " not a String")
-//    }
-    val redisHost = "gpu2"
-    
+    val redisHost = commonConfig.get("redis.host") match {
+      case s: String => s
+      case other => throw new ClassCastException(other + " not a String")
+    }
+
     // Create context with 2 second batch interval
     val sparkConf = new SparkConf().setAppName("KafkaRedisAdvertisingStream")
     val ssc = new StreamingContext(sparkConf, Milliseconds(batchSize))

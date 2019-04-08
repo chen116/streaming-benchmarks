@@ -120,34 +120,34 @@ run() {
   OPERATION=$1
   if [ "SETUP" = "$OPERATION" ];
   then
-    $GIT clean -fd
+ #    $GIT clean -fd
 
-    echo 'kafka.brokers:' > $CONF_FILE
-    echo '    - "gpu2"' >> $CONF_FILE
-    echo >> $CONF_FILE
-    echo 'zookeeper.servers:' >> $CONF_FILE
-    echo '    - "'$ZK_HOST'"' >> $CONF_FILE
-    echo >> $CONF_FILE
-    echo 'kafka.port: 9092' >> $CONF_FILE
-	echo 'zookeeper.port: '$ZK_PORT >> $CONF_FILE
-	echo 'redis.host: "gpu2"' >> $CONF_FILE
-	echo 'kafka.topic: "'$TOPIC'"' >> $CONF_FILE
-	echo 'kafka.partitions: '$PARTITIONS >> $CONF_FILE
-	echo 'process.hosts: 1' >> $CONF_FILE
-	echo 'process.cores: 4' >> $CONF_FILE
-	echo 'storm.workers: 1' >> $CONF_FILE
-	echo 'storm.ackers: 2' >> $CONF_FILE
-	echo 'spark.batchtime: 2000' >> $CONF_FILE
+ #    echo 'kafka.brokers:' > $CONF_FILE
+ #    echo '    - "gpu2"' >> $CONF_FILE
+ #    echo >> $CONF_FILE
+ #    echo 'zookeeper.servers:' >> $CONF_FILE
+ #    echo '    - "'$ZK_HOST'"' >> $CONF_FILE
+ #    echo >> $CONF_FILE
+ #    echo 'kafka.port: 9092' >> $CONF_FILE
+	# echo 'zookeeper.port: '$ZK_PORT >> $CONF_FILE
+	# echo 'redis.host: "gpu2"' >> $CONF_FILE
+	# echo 'kafka.topic: "'$TOPIC'"' >> $CONF_FILE
+	# echo 'kafka.partitions: '$PARTITIONS >> $CONF_FILE
+	# echo 'process.hosts: 1' >> $CONF_FILE
+	# echo 'process.cores: 4' >> $CONF_FILE
+	# echo 'storm.workers: 1' >> $CONF_FILE
+	# echo 'storm.ackers: 2' >> $CONF_FILE
+	# echo 'spark.batchtime: 2000' >> $CONF_FILE
 	
     # $MVN clean install -Dspark.version="$SPARK_VERSION" -Dkafka.version="$KAFKA_VERSION" -Dflink.version="$FLINK_VERSION" -Dstorm.version="$STORM_VERSION" -Dscala.binary.version="$SCALA_BIN_VERSION" -Dscala.version="$SCALA_BIN_VERSION.$SCALA_SUB_VERSION" -Dapex.version="$APEX_VERSION"
-    #$MVN clean install -Dspark.version="$SPARK_VERSION" -Dscala.binary.version="$SCALA_BIN_VERSION" -Dscala.version="$SCALA_BIN_VERSION.$SCALA_SUB_VERSION"
+    $MVN clean install -Dspark.version="$SPARK_VERSION" -Dscala.binary.version="$SCALA_BIN_VERSION" -Dscala.version="$SCALA_BIN_VERSION.$SCALA_SUB_VERSION"
     #Fetch and build Redis
-    REDIS_FILE="$REDIS_DIR.tar.gz"
-    fetch_untar_file "$REDIS_FILE" "http://download.redis.io/releases/$REDIS_FILE"
+    # REDIS_FILE="$REDIS_DIR.tar.gz"
+    # fetch_untar_file "$REDIS_FILE" "http://download.redis.io/releases/$REDIS_FILE"
 
-    cd $REDIS_DIR
-    $MAKE
-    cd ..
+    # cd $REDIS_DIR
+    # $MAKE
+    # cd ..
 
     #Fetch Apex
     # APEX_FILE="$APEX_DIR.tgz.gz"
@@ -157,8 +157,8 @@ run() {
     # cd ..
 
     #Fetch Kafka
-    KAFKA_FILE="$KAFKA_DIR.tgz"
-    fetch_untar_file "$KAFKA_FILE" "$APACHE_MIRROR/kafka/$KAFKA_VERSION/$KAFKA_FILE"
+    # KAFKA_FILE="$KAFKA_DIR.tgz"
+    # fetch_untar_file "$KAFKA_FILE" "$APACHE_MIRROR/kafka/$KAFKA_VERSION/$KAFKA_FILE"
 
     #Fetch Storm
     # STORM_FILE="$STORM_DIR.tar.gz"
