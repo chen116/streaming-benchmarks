@@ -179,7 +179,7 @@ run() {
 
   elif [ "STOP_ZK" = "$OPERATION" ];
   then
-    stop_if_needed dev_zookeeper zookeeper.server
+    stop_if_needed zookeeper.server zookeeper.server
     rm -rf /tmp/dev-storm-zookeeper
   elif [ "START_REDIS" = "$OPERATION" ];
   then
