@@ -250,7 +250,7 @@ run() {
   then
     "$SPARK_DIR/bin/spark-submit" --driver-class-path /root/hpc/sparklens.jar --class spark.benchmark.KafkaRedisAdvertisingStream --master yarn /root/streaming-benchmarks/spark-benchmarks.jar "$CONF_FILE" &
     #"$SPARK_DIR/bin/spark-submit" --master spark://localhost:7077 --class spark.benchmark.KafkaRedisAdvertisingStream /root/streaming-benchmarks/spark-benchmarks.jar "$CONF_FILE" &
-    sleep 60
+    sleep 70
   elif [ "STOP_SPARK_PROCESSING" = "$OPERATION" ];
   then
     stop_if_needed spark.benchmark.KafkaRedisAdvertisingStream "Spark Client Process"

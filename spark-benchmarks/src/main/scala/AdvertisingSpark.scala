@@ -49,6 +49,8 @@ object KafkaRedisAdvertisingStream {
     val sparkConf = new SparkConf().setAppName("KafkaRedisAdvertisingStream")
     val ssc = new StreamingContext(sparkConf, Milliseconds(batchSize))
 
+
+
     val kafkaHosts = commonConfig.get("kafka.brokers").asInstanceOf[java.util.List[String]] match {
       case l: java.util.List[String] => l.asScala.toSeq
       case other => throw new ClassCastException(other + " not a List[String]")
