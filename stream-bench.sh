@@ -145,9 +145,9 @@ run() {
     REDIS_FILE="$REDIS_DIR.tar.gz"
     fetch_untar_file "$REDIS_FILE" "http://download.redis.io/releases/$REDIS_FILE"
 
-    # cd $REDIS_DIR
-    # $MAKE
-    # cd ..
+    cd $REDIS_DIR
+    $MAKE
+    cd ..
 
     #Fetch Apex
     # APEX_FILE="$APEX_DIR.tgz.gz"
@@ -179,7 +179,7 @@ run() {
 
   elif [ "STOP_ZK" = "$OPERATION" ];
   then
-    stop_if_needed dev_zookeeper ZooKeeper
+    stop_if_needed dev_zookeeper zookeeper.server
     rm -rf /tmp/dev-storm-zookeeper
   elif [ "START_REDIS" = "$OPERATION" ];
   then
