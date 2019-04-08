@@ -31,7 +31,7 @@ ZOO_DIR=""
 #Get one of the closet apache mirrors
 APACHE_MIRROR=$"https://archive.apache.org/dist"
 
-ZK_HOST="localhost"
+ZK_HOST="gpu2"
 ZK_PORT="2181"
 ZK_CONNECTIONS="$ZK_HOST:$ZK_PORT"
 TOPIC=${TOPIC:-"ad-events"}
@@ -123,14 +123,14 @@ run() {
     $GIT clean -fd
 
     echo 'kafka.brokers:' > $CONF_FILE
-    echo '    - "localhost"' >> $CONF_FILE
+    echo '    - "gpu2"' >> $CONF_FILE
     echo >> $CONF_FILE
     echo 'zookeeper.servers:' >> $CONF_FILE
     echo '    - "'$ZK_HOST'"' >> $CONF_FILE
     echo >> $CONF_FILE
     echo 'kafka.port: 9092' >> $CONF_FILE
 	echo 'zookeeper.port: '$ZK_PORT >> $CONF_FILE
-	echo 'redis.host: "localhost"' >> $CONF_FILE
+	echo 'redis.host: "gpu2"' >> $CONF_FILE
 	echo 'kafka.topic: "'$TOPIC'"' >> $CONF_FILE
 	echo 'kafka.partitions: '$PARTITIONS >> $CONF_FILE
 	echo 'process.hosts: 1' >> $CONF_FILE
