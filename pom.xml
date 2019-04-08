@@ -102,7 +102,7 @@ Licensed under the terms of the Apache License 2.0. Please see LICENSE file in t
                 <artifactId>spark-core_${scala.binary.version}</artifactId>
                 <version>${spark.version}</version>
                 <scope>system</scope>
-                <systemPath>/home/vic/buspark/spark/core/target/spark-core_2.11-2.4.1-SNAPSHOT.jar</systemPath>
+                <systemPath>/root/buspark/spark/core/target/spark-core_2.11-2.4.1-SNAPSHOT.jar</systemPath>
             </dependency>
 
 <!--             <dependency>
@@ -116,7 +116,7 @@ Licensed under the terms of the Apache License 2.0. Please see LICENSE file in t
                 <artifactId>spark-streaming_${scala.binary.version}</artifactId>
                 <version>${spark.version}</version>
                 <scope>system</scope>
-                <systemPath>/home/vic/buspark/spark/streaming/target/spark-streaming_2.11-2.4.1-SNAPSHOT.jar</systemPath>
+                <systemPath>/root/buspark/spark/streaming/target/spark-streaming_2.11-2.4.1-SNAPSHOT.jar</systemPath>
             </dependency>
 
 <!--             
