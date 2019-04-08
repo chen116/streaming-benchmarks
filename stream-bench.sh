@@ -175,7 +175,7 @@ run() {
   elif [ "START_ZK" = "$OPERATION" ];
   then
     # start_if_needed dev_zookeeper ZooKeeper 10 "$STORM_DIR/bin/storm" dev-zookeeper
-    start_if_needed zookeeper.server ZooKeeper 10 "$KAFKA_DIR/bin/kafka-server-start.sh" "$KAFKA_DIR/config/zookeeper.properties"
+    start_if_needed zookeeper.server ZooKeeper 10 "$KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/zookeeper.properties"
 
   elif [ "STOP_ZK" = "$OPERATION" ];
   then
