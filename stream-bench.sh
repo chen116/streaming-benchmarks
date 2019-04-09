@@ -36,7 +36,7 @@ ZK_PORT="2181"
 ZK_CONNECTIONS="$ZK_HOST:$ZK_PORT"
 TOPIC=${TOPIC:-"ad-events"}
 PARTITIONS=${PARTITIONS:-1}
-LOAD=${LOAD:-100000}
+LOAD=${LOAD:-10000}
 CONF_FILE=./conf/localConf.yaml
 TEST_TIME=${TEST_TIME:-60}
 
@@ -191,33 +191,33 @@ run() {
   then
     stop_if_needed redis-server Redis
     rm -f dump.rdb
-  elif [ "START_STORM" = "$OPERATION" ];
-  then
-    start_if_needed daemon.name=nimbus "Storm Nimbus" 3 "$STORM_DIR/bin/storm" nimbus
-    start_if_needed daemon.name=supervisor "Storm Supervisor" 3 "$STORM_DIR/bin/storm" supervisor
-    start_if_needed daemon.name=ui "Storm UI" 3 "$STORM_DIR/bin/storm" ui
-    start_if_needed daemon.name=logviewer "Storm LogViewer" 3 "$STORM_DIR/bin/storm" logviewer
-    sleep 20
-  elif [ "STOP_STORM" = "$OPERATION" ];
-  then
-    stop_if_needed daemon.name=nimbus "Storm Nimbus"
-    stop_if_needed daemon.name=supervisor "Storm Supervisor"
-    stop_if_needed daemon.name=ui "Storm UI"
-    stop_if_needed daemon.name=logviewer "Storm LogViewer"
-  elif [ "START_KAFKA" = "$OPERATION" ];
-  then
-    start_if_needed kafka\.Kafka Kafka 10 "$KAFKA_DIR/bin/kafka-server-start.sh" "$KAFKA_DIR/config/server.properties"
-    create_kafka_topic
-  elif [ "STOP_KAFKA" = "$OPERATION" ];
-  then
-    stop_if_needed kafka\.Kafka Kafka
-    rm -rf /tmp/kafka-logs/
-  elif [ "START_FLINK" = "$OPERATION" ];
-  then
-    start_if_needed org.apache.flink.runtime.jobmanager.JobManager Flink 1 $FLINK_DIR/bin/start-cluster.sh
-  elif [ "STOP_FLINK" = "$OPERATION" ];
-  then
-    $FLINK_DIR/bin/stop-cluster.sh
+  # elif [ "START_STORM" = "$OPERATION" ];
+  # then
+  #   start_if_needed daemon.name=nimbus "Storm Nimbus" 3 "$STORM_DIR/bin/storm" nimbus
+  #   start_if_needed daemon.name=supervisor "Storm Supervisor" 3 "$STORM_DIR/bin/storm" supervisor
+  #   start_if_needed daemon.name=ui "Storm UI" 3 "$STORM_DIR/bin/storm" ui
+  #   start_if_needed daemon.name=logviewer "Storm LogViewer" 3 "$STORM_DIR/bin/storm" logviewer
+  #   sleep 20
+  # elif [ "STOP_STORM" = "$OPERATION" ];
+  # then
+  #   stop_if_needed daemon.name=nimbus "Storm Nimbus"
+  #   stop_if_needed daemon.name=supervisor "Storm Supervisor"
+  #   stop_if_needed daemon.name=ui "Storm UI"
+  #   stop_if_needed daemon.name=logviewer "Storm LogViewer"
+  # elif [ "START_KAFKA" = "$OPERATION" ];
+  # then
+  #   start_if_needed kafka\.Kafka Kafka 10 "$KAFKA_DIR/bin/kafka-server-start.sh" "$KAFKA_DIR/config/server.properties"
+  #   create_kafka_topic
+  # elif [ "STOP_KAFKA" = "$OPERATION" ];
+  # then
+  #   stop_if_needed kafka\.Kafka Kafka
+  #   rm -rf /tmp/kafka-logs/
+  # elif [ "START_FLINK" = "$OPERATION" ];
+  # then
+  #   start_if_needed org.apache.flink.runtime.jobmanager.JobManager Flink 1 $FLINK_DIR/bin/start-cluster.sh
+  # elif [ "STOP_FLINK" = "$OPERATION" ];
+  # then
+  #   $FLINK_DIR/bin/stop-cluster.sh
   elif [ "START_SPARK" = "$OPERATION" ];
   then
     start_if_needed org.apache.spark.deploy.master.Master SparkMaster 5 $SPARK_DIR/sbin/start-master.sh -h localhost -p 7077
@@ -238,14 +238,14 @@ run() {
     cd data
     $LEIN run -g --configPath ../$CONF_FILE || true
     cd ..
-  elif [ "START_STORM_TOPOLOGY" = "$OPERATION" ];
-  then
-    "$STORM_DIR/bin/storm" jar ./storm-benchmarks/target/storm-benchmarks-0.1.0.jar storm.benchmark.AdvertisingTopology test-topo -conf $CONF_FILE
-    sleep 15
-  elif [ "STOP_STORM_TOPOLOGY" = "$OPERATION" ];
-  then
-    "$STORM_DIR/bin/storm" kill -w 0 test-topo || true
-    sleep 10
+  # elif [ "START_STORM_TOPOLOGY" = "$OPERATION" ];
+  # then
+  #   "$STORM_DIR/bin/storm" jar ./storm-benchmarks/target/storm-benchmarks-0.1.0.jar storm.benchmark.AdvertisingTopology test-topo -conf $CONF_FILE
+  #   sleep 15
+  # elif [ "STOP_STORM_TOPOLOGY" = "$OPERATION" ];
+  # then
+  #   "$STORM_DIR/bin/storm" kill -w 0 test-topo || true
+  #   sleep 10
   elif [ "START_SPARK_PROCESSING" = "$OPERATION" ];
   then
     "$SPARK_DIR/bin/spark-submit" --driver-class-path /root/hpc/sparklens.jar --class spark.benchmark.KafkaRedisAdvertisingStream --master yarn /root/streaming-benchmarks/spark-benchmarks.jar "$CONF_FILE" &
@@ -253,41 +253,41 @@ run() {
     sleep 50
   elif [ "STOP_SPARK_PROCESSING" = "$OPERATION" ];
   then
-    stop_if_needed spark.benchmark.KafkaRedisAdvertisingStream "Spark Client Process"
-  elif [ "START_FLINK_PROCESSING" = "$OPERATION" ];
-  then
-    "$FLINK_DIR/bin/flink" run ./flink-benchmarks/target/flink-benchmarks-0.1.0.jar --confPath $CONF_FILE &
-    sleep 3
-  elif [ "STOP_FLINK_PROCESSING" = "$OPERATION" ];
-  then
-    FLINK_ID=`"$FLINK_DIR/bin/flink" list | grep 'Flink Streaming Job' | awk '{print $4}'; true`
-    if [ "$FLINK_ID" == "" ];
-	then
-	  echo "Could not find streaming job to kill"
-    else
-      "$FLINK_DIR/bin/flink" cancel $FLINK_ID
-      sleep 3
-    fi
-  elif [ "START_APEX" = "$OPERATION" ];
-      then
-      "$APEX_DIR/engine/src/main/scripts/apex" -e "launch -local -conf ./conf/apex.xml ./apex-benchmarks/target/apex_benchmark-1.0-SNAPSHOT.apa -exactMatch Apex_Benchmark"
-             sleep 5
-  elif [ "STOP_APEX" = "$OPERATION" ];
-       then
-       pkill -f apex_benchmark
-  elif [ "START_APEX_ON_YARN" = "$OPERATION" ];
-       then
-        "$APEX_DIR/engine/src/main/scripts/apex" -e "launch ./apex-benchmarks/target/apex_benchmark-1.0-SNAPSHOT.apa -conf ./conf/apex.xml -exactMatch Apex_Benchmark"
-  elif [ "STOP_APEX_ON_YARN" = "$OPERATION" ];
-       then
-       APP_ID=`"$APEX_DIR/engine/src/main/scripts/apex" -e "list-apps" | grep id | awk '{ print $2 }'| cut -c -1 ; true`
-       if [ "APP_ID" == "" ];
-       then
-         echo "Could not find streaming job to kill"
-       else
-        "$APEX_DIR/engine/src/main/scripts/apex" -e "kill-app $APP_ID"
-         sleep 3
-       fi
+ #    stop_if_needed spark.benchmark.KafkaRedisAdvertisingStream "Spark Client Process"
+ #  elif [ "START_FLINK_PROCESSING" = "$OPERATION" ];
+ #  then
+ #    "$FLINK_DIR/bin/flink" run ./flink-benchmarks/target/flink-benchmarks-0.1.0.jar --confPath $CONF_FILE &
+ #    sleep 3
+ #  elif [ "STOP_FLINK_PROCESSING" = "$OPERATION" ];
+ #  then
+ #    FLINK_ID=`"$FLINK_DIR/bin/flink" list | grep 'Flink Streaming Job' | awk '{print $4}'; true`
+ #    if [ "$FLINK_ID" == "" ];
+	# then
+	#   echo "Could not find streaming job to kill"
+ #    else
+ #      "$FLINK_DIR/bin/flink" cancel $FLINK_ID
+ #      sleep 3
+ #    fi
+ #  elif [ "START_APEX" = "$OPERATION" ];
+ #      then
+ #      "$APEX_DIR/engine/src/main/scripts/apex" -e "launch -local -conf ./conf/apex.xml ./apex-benchmarks/target/apex_benchmark-1.0-SNAPSHOT.apa -exactMatch Apex_Benchmark"
+ #             sleep 5
+ #  elif [ "STOP_APEX" = "$OPERATION" ];
+ #       then
+ #       pkill -f apex_benchmark
+ #  elif [ "START_APEX_ON_YARN" = "$OPERATION" ];
+ #       then
+ #        "$APEX_DIR/engine/src/main/scripts/apex" -e "launch ./apex-benchmarks/target/apex_benchmark-1.0-SNAPSHOT.apa -conf ./conf/apex.xml -exactMatch Apex_Benchmark"
+ #  elif [ "STOP_APEX_ON_YARN" = "$OPERATION" ];
+ #       then
+ #       APP_ID=`"$APEX_DIR/engine/src/main/scripts/apex" -e "list-apps" | grep id | awk '{ print $2 }'| cut -c -1 ; true`
+ #       if [ "APP_ID" == "" ];
+ #       then
+ #         echo "Could not find streaming job to kill"
+ #       else
+ #        "$APEX_DIR/engine/src/main/scripts/apex" -e "kill-app $APP_ID"
+ #         sleep 3
+ #       fi
   elif [ "STORM_TEST" = "$OPERATION" ];
   then
     run "START_ZK"
