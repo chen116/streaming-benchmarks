@@ -204,14 +204,14 @@ run() {
   #   stop_if_needed daemon.name=supervisor "Storm Supervisor"
   #   stop_if_needed daemon.name=ui "Storm UI"
   #   stop_if_needed daemon.name=logviewer "Storm LogViewer"
-  # elif [ "START_KAFKA" = "$OPERATION" ];
-  # then
-  #   start_if_needed kafka\.Kafka Kafka 10 "$KAFKA_DIR/bin/kafka-server-start.sh" "$KAFKA_DIR/config/server.properties"
-  #   create_kafka_topic
-  # elif [ "STOP_KAFKA" = "$OPERATION" ];
-  # then
-  #   stop_if_needed kafka\.Kafka Kafka
-  #   rm -rf /tmp/kafka-logs/
+  elif [ "START_KAFKA" = "$OPERATION" ];
+  then
+    start_if_needed kafka\.Kafka Kafka 10 "$KAFKA_DIR/bin/kafka-server-start.sh" "$KAFKA_DIR/config/server.properties"
+    create_kafka_topic
+  elif [ "STOP_KAFKA" = "$OPERATION" ];
+  then
+    stop_if_needed kafka\.Kafka Kafka
+    rm -rf /tmp/kafka-logs/
   # elif [ "START_FLINK" = "$OPERATION" ];
   # then
   #   start_if_needed org.apache.flink.runtime.jobmanager.JobManager Flink 1 $FLINK_DIR/bin/start-cluster.sh
