@@ -248,8 +248,8 @@ run() {
   #   sleep 10
   elif [ "START_SPARK_PROCESSING" = "$OPERATION" ];
   then
-    "$SPARK_DIR/bin/spark-submit" --driver-class-path /root/hpc/sparklens.jar --class spark.benchmark.KafkaRedisAdvertisingStream --master yarn /root/streaming-benchmarks/spark-benchmarks.jar "$CONF_FILE" &
-    #"$SPARK_DIR/bin/spark-submit" --master spark://localhost:7077 --class spark.benchmark.KafkaRedisAdvertisingStream /root/streaming-benchmarks/spark-benchmarks.jar "$CONF_FILE" &
+    #"$SPARK_DIR/bin/spark-submit" --driver-class-path /root/hpc/sparklens.jar --class spark.benchmark.KafkaRedisAdvertisingStream --master yarn /root/streaming-benchmarks/spark-benchmarks.jar "$CONF_FILE" &
+    "$SPARK_DIR/bin/spark-submit" --master spark://localhost:7077 --class spark.benchmark.KafkaRedisAdvertisingStream /root/streaming-benchmarks/spark-benchmarks.jar "$CONF_FILE" &
     sleep 50
   elif [ "STOP_SPARK_PROCESSING" = "$OPERATION" ];
   then
@@ -323,13 +323,13 @@ run() {
     run "START_ZK"
     run "START_REDIS"
     run "START_KAFKA"
-    # run "START_SPARK"
+    run "START_SPARK"
     run "START_SPARK_PROCESSING"
     run "START_LOAD"
     sleep $TEST_TIME
     run "STOP_LOAD"
     run "STOP_SPARK_PROCESSING"
-    # run "STOP_SPARK"
+    run "STOP_SPARK"
     run "STOP_KAFKA"
     run "STOP_REDIS"
     run "STOP_ZK"
